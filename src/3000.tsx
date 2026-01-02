@@ -1,26 +1,48 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Star, CheckCircle, TrendingUp, Heart, Crown, DollarSign, Phone, ArrowRight, Sparkles, Shield, Check, Play, Pause } from 'lucide-react';
+
+interface VideoTestimonialType {
+  name: string;
+  title: string;
+  type: "image" | "video";
+  imageUrl?: string;
+  videoUrl?: string;
+  thumbnail: string;
+}
+
+interface TextTestimonialType {
+  name: string;
+  title: string;
+  verified?: boolean;
+  image: string;
+  rating: number;
+  text: string;
+}
 
 export default function ELVision3000() {
   // Facebook Pixel Code
   useEffect(() => {
-    !(function (f: any, b: any, e: any, v: any, n: any, t: any, s: any) {
+    (function (f: any, b: any, e: any, v: any) {
       if (f.fbq) return;
-      n = f.fbq = function () {
-        n.callMethod
-          ? n.callMethod.apply(n, arguments)
-          : n.queue.push(arguments);
+      let n: any = f.fbq = function (this: any) {
+        if (n.callMethod) {
+          n.callMethod.apply(this, arguments);
+        } else {
+          n.queue.push(arguments);
+        }
       };
       if (!f._fbq) f._fbq = n;
       n.push = n;
-      n.loaded = !0;
+      n.loaded = true;
       n.version = '2.0';
       n.queue = [];
-      t = b.createElement(e);
-      t.async = !0;
+      const t = b.createElement(e) as HTMLScriptElement; // Explicitly type as HTMLScriptElement
+      t.async = true;
       t.src = v;
-      s = b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t, s);
+      const s = b.getElementsByTagName(e)[0];
+      if (s && s.parentNode) {
+        s.parentNode.insertBefore(t, s);
+      }
     })(
       window,
       document,
@@ -31,7 +53,7 @@ export default function ELVision3000() {
     fbq('init', 'EAAGuZBVYmBugBQXvt52SiECtanczI1jMngHkCHWLWDQOIQGZBnkLipg0poGZBZBaJ7RNxa2fcesMH8mtyizKHSG9nZARKg622a8q3jcZCcKLGXXST9pNg26RZBFZBFrtSWT5C23oJBONslIQeOyTirGDjJp6gbrbGExxCF1D7VsdmrOoswXdy1UPomLrM8nJ4ih9MQZDZD');
     fbq('track', 'PageView');
   }, []);
-  const videoTestimonials = [
+  const videoTestimonials: VideoTestimonialType[] = [
     {
       name: "Agus Mulyadi, SH., MH.",
       title: "Head of Pangandaran Intelligence",
@@ -90,7 +112,7 @@ export default function ELVision3000() {
     }
   ];
 
-  const testimonials = [
+  const testimonials: TextTestimonialType[] = [
     {
       name: "Felicia Quincy",
       title: "Instagram: @itsfelicia.quincy",
@@ -247,8 +269,8 @@ export default function ELVision3000() {
   ];
 
   // Video Testimonial Component
-  const VideoTestimonial = ({ testimonial }) => {
-    const videoRef = useRef(null);
+  const VideoTestimonial = ({ testimonial }: { testimonial: VideoTestimonialType }) => {
+    const videoRef = useRef<HTMLVideoElement | null>(null);
 
     return (
       <div className="bg-gradient-to-br from-gray-900 to-black border border-yellow-900/30 rounded-2xl p-6 hover:border-yellow-500/50 transition-all">
@@ -274,11 +296,11 @@ export default function ELVision3000() {
             webkit-playsinline="true"
             poster={testimonial.thumbnail} // Use thumbnail as poster for videos
           >
-            <source src={testimonial.videoUrl} type="video/mp4" />
+            {testimonial.videoUrl && <source src={testimonial.videoUrl} type="video/mp4" />}
             Your browser does not support video playback.
           </video>
         )}
-        {testimonial.type === "image" && (
+        {testimonial.type === "image" && testimonial.imageUrl && (
           <img 
             src={testimonial.imageUrl} 
             alt={`Testimonial from ${testimonial.name}`} 
@@ -291,24 +313,26 @@ export default function ELVision3000() {
 
   // New Audio Player Component
   const AudioPlayer = () => {
-    const audioRef = useRef(null);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
     const [isPlaying, setIsPlaying] = useState(false);
 
     const togglePlayPause = () => {
-      if (audioRef.current.paused) {
-        audioRef.current.play();
-        setIsPlaying(true);
-        // Track custom event for audio playback
-        // @ts-ignore
-        if (typeof fbq === 'function') {
+      if (audioRef.current) {
+        if (audioRef.current.paused) {
+          audioRef.current.play();
+          setIsPlaying(true);
+          // Track custom event for audio playback
           // @ts-ignore
-          fbq('trackCustom', 'AudioPlayed', {
-            audio_src: audioRef.current.src,
-          });
+          if (typeof fbq === 'function') {
+            // @ts-ignore
+            fbq('trackCustom', 'AudioPlayed', {
+              audio_src: audioRef.current.src,
+            });
+          }
+        } else {
+          audioRef.current.pause();
+          setIsPlaying(false);
         }
-      } else {
-        audioRef.current.pause();
-        setIsPlaying(false);
       }
     };
 
