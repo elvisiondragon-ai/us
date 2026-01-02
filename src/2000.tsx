@@ -1315,7 +1315,7 @@ export default function ELVision2000() {
                 // @ts-ignore
                 if (typeof fbq === 'function') {
                   // @ts-ignore
-                  fbq('track', 'AddToCart', {
+                  fbq('track', 'Lead', {
                     content_name: 'EL Vision 3000 Coaching',
                   });
                 }
