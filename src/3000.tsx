@@ -514,13 +514,13 @@ export default function ELVision3000() {
                 </div>
               </div>
               
-              <video 
-                className="w-full rounded-lg mb-6"
-                controls
-                preload="metadata"
-                playsInline
-              >
-                <source src="https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.mp4" type="video/mp4" />
+                            <video
+                              className="w-full rounded-lg mb-6"
+                              controls
+                              preload="metadata"
+                              playsInline
+                              poster="https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.jpg"
+                            >                <source src="https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.mp4" type="video/mp4" />
                 Your browser does not support video playback.
               </video>
 
