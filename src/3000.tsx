@@ -1,48 +1,26 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Star, CheckCircle, TrendingUp, Heart, Crown, DollarSign, Phone, ArrowRight, Sparkles, Shield, Check, Play, Pause } from 'lucide-react';
-
-interface VideoTestimonialType {
-  name: string;
-  title: string;
-  type: "image" | "video";
-  imageUrl?: string;
-  videoUrl?: string;
-  thumbnail: string;
-}
-
-interface TextTestimonialType {
-  name: string;
-  title: string;
-  verified?: boolean;
-  image: string;
-  rating: number;
-  text: string;
-}
 
 export default function ELVision3000() {
   // Facebook Pixel Code
   useEffect(() => {
-    (function (f: any, b: any, e: any, v: any) {
+    !(function (f: any, b: any, e: any, v: any, n: any, t: any, s: any) {
       if (f.fbq) return;
-      let n: any = f.fbq = function (this: any) {
-        if (n.callMethod) {
-          n.callMethod.apply(this, arguments);
-        } else {
-          n.queue.push(arguments);
-        }
+      n = f.fbq = function () {
+        n.callMethod
+          ? n.callMethod.apply(n, arguments)
+          : n.queue.push(arguments);
       };
       if (!f._fbq) f._fbq = n;
       n.push = n;
-      n.loaded = true;
+      n.loaded = !0;
       n.version = '2.0';
       n.queue = [];
-      const t = b.createElement(e) as HTMLScriptElement; // Explicitly type as HTMLScriptElement
-      t.async = true;
+      t = b.createElement(e);
+      t.async = !0;
       t.src = v;
-      const s = b.getElementsByTagName(e)[0];
-      if (s && s.parentNode) {
-        s.parentNode.insertBefore(t, s);
-      }
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
     })(
       window,
       document,
@@ -53,66 +31,95 @@ export default function ELVision3000() {
     fbq('init', 'EAAGuZBVYmBugBQXvt52SiECtanczI1jMngHkCHWLWDQOIQGZBnkLipg0poGZBZBaJ7RNxa2fcesMH8mtyizKHSG9nZARKg622a8q3jcZCcKLGXXST9pNg26RZBFZBFrtSWT5C23oJBONslIQeOyTirGDjJp6gbrbGExxCF1D7VsdmrOoswXdy1UPomLrM8nJ4ih9MQZDZD');
     fbq('track', 'PageView');
   }, []);
-  const videoTestimonials: VideoTestimonialType[] = [
+  const videoTestimonials = [
     {
       name: "Agus Mulyadi, SH., MH.",
       title: "Head of Pangandaran Intelligence",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/agus.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/agus.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/agus.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/agus.jpg"
     },
     {
       name: "Dr. Gumilar",
       title: "Hypnotherapist & Foundation Leader",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/dr.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/dr.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/dr.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/dr.jpg"
     },
     {
       name: "Habib Umar",
       title: "Leader of Atsaqofah Islamic Boarding School",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/habib.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/habib.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/habib.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/habib.jpg"
     },
     {
       name: "Umi Jamilah",
       title: "Foundation Leader",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/umi.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/umi.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/umi.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/umi.jpg"
     },
     {
       name: "Felicia",
       title: "Entrepreneur",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/felicia.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/felicia.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/felicia.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/felicia.jpg"
     },
     {
       name: "Lena",
       title: "eL Vision Client",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/lena.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/lena.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/lena.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/lena.jpg"
     },
     {
       name: "Vio",
       title: "eL Vision Client",
       type: "video",
-      videoUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/vio2.mp4",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/vio2.jpg" // Placeholder thumbnail
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/vio2.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/vio2.jpg" // Placeholder thumbnail
     },
     {
       name: "Arif",
       title: "eL Vision Client",
       type: "video",
-      videoUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.mp4",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.jpg" // Placeholder thumbnail
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/arif2.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/arif2.jpg" // Placeholder thumbnail
+    },
+    {
+      name: "Jacob",
+      title: "eL Vision Client",
+      type: "video",
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/jacob.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/jacob.jpg"
+    },
+    {
+      name: "Wiliam",
+      title: "eL Vision Client",
+      type: "video",
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/wiliam.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/wiliam.jpg"
+    },
+    {
+      name: "Ana",
+      title: "eL Vision Client",
+      type: "video",
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/ana.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/ana.jpg"
     }
   ];
 
-  const testimonials: TextTestimonialType[] = [
+  const founderVideoTestimonial = {
+      name: "eL Reyzandra (Founder)",
+      title: "eL Vision Founder",
+      type: "video",
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/founder.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/founder.jpg"
+    };
+
+  const testimonials = [
     {
       name: "Felicia Quincy",
       title: "Instagram: @itsfelicia.quincy",
@@ -269,8 +276,8 @@ export default function ELVision3000() {
   ];
 
   // Video Testimonial Component
-  const VideoTestimonial = ({ testimonial }: { testimonial: VideoTestimonialType }) => {
-    const videoRef = useRef<HTMLVideoElement | null>(null);
+  const VideoTestimonial = ({ testimonial }) => {
+    const videoRef = useRef(null);
 
     return (
       <div className="bg-gradient-to-br from-gray-900 to-black border border-yellow-900/30 rounded-2xl p-6 hover:border-yellow-500/50 transition-all">
@@ -287,7 +294,7 @@ export default function ELVision3000() {
         </div>
         
         {testimonial.type === "video" && (
-          <video 
+          <video
             ref={videoRef}
             className="w-full rounded-lg"
             controls
@@ -296,11 +303,11 @@ export default function ELVision3000() {
             webkit-playsinline="true"
             poster={testimonial.thumbnail} // Use thumbnail as poster for videos
           >
-            {testimonial.videoUrl && <source src={testimonial.videoUrl} type="video/mp4" />}
+            <source src={testimonial.videoUrl} type="video/mp4" />
             Your browser does not support video playback.
           </video>
         )}
-        {testimonial.type === "image" && testimonial.imageUrl && (
+        {testimonial.type === "image" && (
           <img 
             src={testimonial.imageUrl} 
             alt={`Testimonial from ${testimonial.name}`} 
@@ -313,26 +320,24 @@ export default function ELVision3000() {
 
   // New Audio Player Component
   const AudioPlayer = () => {
-    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const audioRef = useRef(null);
     const [isPlaying, setIsPlaying] = useState(false);
 
     const togglePlayPause = () => {
-      if (audioRef.current) {
-        if (audioRef.current.paused) {
-          audioRef.current.play();
-          setIsPlaying(true);
-          // Track custom event for audio playback
+      if (audioRef.current.paused) {
+        audioRef.current.play();
+        setIsPlaying(true);
+        // Track custom event for audio playback
+        // @ts-ignore
+        if (typeof fbq === 'function') {
           // @ts-ignore
-          if (typeof fbq === 'function') {
-            // @ts-ignore
-            fbq('trackCustom', 'AudioPlayed', {
-              audio_src: audioRef.current.src,
-            });
-          }
-        } else {
-          audioRef.current.pause();
-          setIsPlaying(false);
+          fbq('trackCustom', 'AudioPlayed', {
+            audio_src: audioRef.current.src,
+          });
         }
+      } else {
+        audioRef.current.pause();
+        setIsPlaying(false);
       }
     };
 
@@ -355,7 +360,7 @@ export default function ELVision3000() {
           {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
           {isPlaying ? 'Pause Audio' : 'Play Audio'}
         </button>
-        <audio ref={audioRef} src="https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/audio/el3000.mp3" preload="auto" className="hidden" />
+        <audio ref={audioRef} src="https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/el3000.mp3" preload="auto" className="hidden" />
       </div>
     );
   };
@@ -422,6 +427,13 @@ export default function ELVision3000() {
             FOLLOW OUR FOUNDER AT INSTAGRAM
           </button>
         
+        {/* eL Reyzandra's Video Testimonial */}
+        <div className="py-10 bg-black">
+          <div className="container mx-auto px-6">
+            <VideoTestimonial testimonial={founderVideoTestimonial} />
+          </div>
+        </div>
+
         {/* Audio Player */}
         <div className="py-10 bg-black">
           <div className="container mx-auto px-6">
@@ -514,13 +526,14 @@ export default function ELVision3000() {
                 </div>
               </div>
               
-                            <video
-                              className="w-full rounded-lg mb-6"
-                              controls
-                              preload="metadata"
-                              playsInline
-                              poster="https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.jpg"
-                            >                <source src="https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.mp4" type="video/mp4" />
+              <video 
+                className="w-full rounded-lg mb-6"
+                controls
+                preload="metadata"
+                playsInline
+                poster="https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/arif2.jpg"
+              >
+                <source src="https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/arif2.mp4" type="video/mp4" />
                 Your browser does not support video playback.
               </video>
 
@@ -1305,7 +1318,7 @@ export default function ELVision3000() {
               <div className="text-sm text-gray-400 mb-6">Pay After Session 1 • 1 Session per Week</div>
               
               <div className="inline-block bg-yellow-500/20 border border-yellow-500/30 rounded-lg px-6 py-3">
-                <p className="text-yellow-400 font-semibold">⚡ Limited: Only 3 Slots per Month</p>
+                <p className="text-yellow-400 font-semibold">⚡ Limited</p>
               </div>
             </div>
 
@@ -1315,7 +1328,7 @@ export default function ELVision3000() {
                 // @ts-ignore
                 if (typeof fbq === 'function') {
                   // @ts-ignore
-                  fbq('track', 'Lead', {
+                  fbq('track', 'AddToCart', {
                     content_name: 'EL Vision 3000 Coaching',
                   });
                 }
@@ -1325,6 +1338,15 @@ export default function ELVision3000() {
               <Phone className="w-8 h-8" />
               BOOK A CALL NOW
               <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
+            </button>
+
+            <button
+              className="group bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-white font-bold text-xl px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-blue-500/50 flex items-center gap-4 mx-auto mb-8"
+              onClick={() => window.open('https://www.paypal.com/ncp/payment/3XU3SJV595CE4', '_blank')}
+            >
+              <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-mark-color.svg" alt="PayPal" className="w-6 h-6" />
+              PAY 6 WEEKS PROGRAM VIA PAYPAL
+              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
             </button>
 
             <p className="text-gray-500 text-sm">
