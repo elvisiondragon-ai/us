@@ -178,7 +178,7 @@ export default function ELVision3000() {
       title: "Art Gallery Owner, Singapore",
       image: "🎨",
       rating: 5,
-      text: "After the free first session, I immediately knew this was different. Not empty advice, but real results. 3 weeks later, my collection sold for 3x expected price. The energy shift is real."
+      text: "I immediately knew this was different. Not empty advice, but real results. 3 weeks later, my collection sold for 3x expected price. The energy shift is real."
     },
     {
       name: "Budi Hermawan",
@@ -402,22 +402,40 @@ export default function ELVision3000() {
             For those who already have everything, but still searching for something deeper
           </p>
 
-          {/* Free Trial Badge */}
-          <div className="inline-block bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-2 border-green-500/50 rounded-2xl px-8 py-4 mb-6 backdrop-blur-sm">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-8 h-8 text-green-400" />
+          <div className="bg-gradient-to-r from-yellow-900/30 to-amber-900/30 border border-yellow-500/30 rounded-2xl p-8 max-w-2xl mx-auto backdrop-blur-sm mb-6">
+            <div className="text-5xl font-bold text-yellow-400 mb-2">$3,000</div>
+            <div className="text-xl text-gray-300 mb-1">6 Weeks • 6 Private Sessions (60 min/session)</div>
+            <div className="text-sm text-gray-400">1 Session per Week</div>
+          </div>
+
+          {/* Money Back Guarantee Box */}
+          <div className="bg-gradient-to-r from-blue-900/20 to-indigo-900/20 border border-blue-500/30 rounded-2xl p-6 max-w-2xl mx-auto backdrop-blur-sm mb-8">
+            <div className="flex items-center gap-4">
+              <Shield className="w-12 h-12 text-blue-400 flex-shrink-0" />
               <div className="text-left">
-                <div className="text-2xl font-bold text-green-400">FIRST SESSION FREE</div>
-                <div className="text-sm text-gray-300">Experience The Value, Pay When You're Sure</div>
+                <div className="text-xl font-bold text-blue-400 uppercase tracking-wider">Money Back Guarantee</div>
+                <div className="text-gray-300">Based on internal client feedback, the vast majority experience positive progress early in the process.</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-yellow-900/30 to-amber-900/30 border border-yellow-500/30 rounded-2xl p-8 max-w-2xl mx-auto backdrop-blur-sm mb-8">
-            <div className="text-5xl font-bold text-yellow-400 mb-2">$3,000</div>
-            <div className="text-xl text-gray-300 mb-1">6 Weeks • 6 Private Sessions (60 min/session)</div>
-            <div className="text-sm text-gray-400">Pay After Session 1 • 1 Session per Week</div>
-          </div>
+          <button 
+            className="group bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-bold text-2xl px-16 py-8 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-yellow-500/50 flex items-center gap-4 mx-auto mb-8"
+            onClick={() => {
+              // @ts-ignore
+              if (typeof fbq === 'function') {
+                // @ts-ignore
+                fbq('track', 'AddToCart', {
+                  content_name: 'EL Vision 3000 Coaching',
+                });
+              }
+              window.location.href = 'https://app.elvisiongroup.com/3000survey';
+            }}
+          >
+            <Phone className="w-8 h-8" />
+            BOOK A CALL NOW
+            <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
+          </button>
         </div>
       </div>
 
@@ -466,19 +484,16 @@ export default function ELVision3000() {
               <p className="mb-4">What is missing?</p>
               <p className="mb-4">Years of research, personal testing, and sacrifice eventually revealed the gap.</p>
               <p className="mb-4">That gap is what eL Vision now addresses—not as theory, but as a lived system that can be experienced directly.</p>
-              <p className="mb-4">This is also why the first session is offered free.</p>
               <p className="mb-4">I do not sell motivation, belief, or advice.</p>
               <p className="mb-4">I offer a working method.</p>
-              <p className="mb-4">One of my earliest international clients in Dubai came to me after losing his job. He joined a free session. Weeks later, he secured a better position as a manager at a premium gym.</p>
+              <p className="mb-4">One of my earliest international clients in Dubai came to me after losing his job. Weeks later, he secured a better position as a manager at a premium gym after applying our method.</p>
               <p className="mb-4">No promises were made. No persuasion was used.</p>
               <p className="mb-4">Am I extraordinary?</p>
               <p className="mb-4">No.</p>
               <p className="mb-4">What I have learned is this:</p>
               <p className="mb-4">every human being carries an inner strength already granted by nature.</p>
               <p className="mb-4">The difference lies only in knowing how to activate it.</p>
-              <p className="mb-4">If you genuinely wish to experience this for yourself,</p>
-              <p className="mb-4">start with the free session.</p>
-              <p className="mb-4">Only then decide whether the six-week program is right for you.</p>
+              <p className="mb-4">If you genuinely wish to experience this for yourself, join the six-week program.</p>
               <p className="mb-4">I have no interest in earning money by keeping people dependent or confused.</p>
               <p className="mb-4">This is designed to be one of the most efficient investments you will ever make—</p>
               <p className="mb-4">a small portion of your resources, in exchange for what matters most: clarity, alignment, and inner stability.</p>
@@ -488,6 +503,82 @@ export default function ELVision3000() {
             </div>
           </div>
         </div>
+
+      {/* Founder History & Why It Works Section */}
+      <div className="py-20 bg-gray-900">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
+            <div className="w-full md:w-1/3">
+               <div className="bg-gradient-to-br from-yellow-500/10 to-amber-500/10 border border-yellow-500/30 rounded-3xl p-8 text-center backdrop-blur-sm">
+                 <div className="text-6xl mb-6">📰</div>
+                 <div className="font-bold text-yellow-500 text-sm tracking-wider uppercase mb-2">As Featured In</div>
+                 <div className="text-3xl font-bold text-white mb-4">Liputan6</div>
+                 <div className="h-px w-16 bg-yellow-500/50 mx-auto mb-4"></div>
+                 <p className="text-gray-300 italic">"Helped hundreds of entrepreneurs with 98% success rate"</p>
+               </div>
+            </div>
+            <div className="w-full md:w-2/3">
+              <h2 className="text-4xl font-bold mb-6">
+                <span className="bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent">
+                  From Media-Recognized Motivator to System Architect
+                </span>
+              </h2>
+              <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                Before eL Vision became an exclusive 1:1 service, <strong className="text-white">eL Reyzandra</strong> was recognized by national media (Liputan6) as a business motivator who successfully guided hundreds of beginner entrepreneurs to profitability.
+              </p>
+              <p className="text-gray-300 text-lg leading-relaxed">
+                But during this journey, he discovered a critical truth: <strong>Motivation is temporary. Systems are permanent.</strong>
+              </p>
+              <p className="text-gray-300 text-lg leading-relaxed mt-4">
+                He realized that the 2% who failed didn't lack effort—they had internal "algorithms" that rejected success. This led to the creation of the eL Vision Method: a protocol not to <em>motivate</em> the mind, but to <strong className="text-yellow-400">reprogram the biological and energetic system</strong> itself.
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-white mb-4">Why The System Works Across All Areas</h3>
+            <p className="text-xl text-gray-400">We don't solve problems. We fix the machine that perceives them.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Finance */}
+            <div className="bg-gradient-to-br from-black to-gray-900 border border-gray-800 p-8 rounded-2xl hover:border-green-500/30 transition-all group">
+               <div className="w-14 h-14 bg-green-900/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                 <DollarSign className="w-8 h-8 text-green-400" />
+               </div>
+               <h4 className="text-xl font-bold text-white mb-3">Finance</h4>
+               <div className="text-green-500 text-sm font-bold mb-3 uppercase tracking-wider">The "Profit" Algorithm</div>
+               <p className="text-gray-400 leading-relaxed">
+                 Most financial blocks aren't strategic—they are energetic. We install a "Success Algorithm" that aligns your subconscious focus with market opportunities, making wealth creation feel like a natural reflex rather than a forced effort.
+               </p>
+            </div>
+
+            {/* Health */}
+            <div className="bg-gradient-to-br from-black to-gray-900 border border-gray-800 p-8 rounded-2xl hover:border-red-500/30 transition-all group">
+               <div className="w-14 h-14 bg-red-900/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                 <Heart className="w-8 h-8 text-red-400" />
+               </div>
+               <h4 className="text-xl font-bold text-white mb-3">Health</h4>
+               <div className="text-red-500 text-sm font-bold mb-3 uppercase tracking-wider">The "Repair" Mode</div>
+               <p className="text-gray-400 leading-relaxed">
+                 High achievers live in chronic sympathetic (fight-or-flight) stress. Our method forces the nervous system into deep parasympathetic dominance—the only state where the body can repair tissues, kill abnormal cells (as seen in our cancer survivor cases), and reverse aging.
+               </p>
+            </div>
+
+            {/* Relationship */}
+            <div className="bg-gradient-to-br from-black to-gray-900 border border-gray-800 p-8 rounded-2xl hover:border-purple-500/30 transition-all group">
+               <div className="w-14 h-14 bg-purple-900/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                 <Crown className="w-8 h-8 text-purple-400" />
+               </div>
+               <h4 className="text-xl font-bold text-white mb-3">Relationship</h4>
+               <div className="text-purple-500 text-sm font-bold mb-3 uppercase tracking-wider">The "Resonance" Law</div>
+               <p className="text-gray-400 leading-relaxed">
+                 You don't get what you want; you get who you are. By calibrating your internal emotional baseline, you naturally repel toxic dynamics and magnetically attract partners (or heal existing marriages) who respect and value your presence without you saying a word.
+               </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Story-Based Case Studies Section */}
       <div className="py-20 bg-gradient-to-b from-black to-gray-900">
@@ -916,7 +1007,6 @@ export default function ELVision3000() {
 
             <div className="mt-12 bg-gradient-to-r from-yellow-900/30 to-amber-900/30 border border-yellow-500/30 rounded-2xl p-8">
               <p className="text-2xl text-gray-300 leading-relaxed">
-                That's why <strong className="text-yellow-400">FIRST SESSION IS FREE</strong>.<br />
                 You don't have to believe our words.<br />
                 <span className="text-3xl font-bold text-yellow-400">Experience the proof yourself.</span>
               </p>
@@ -1312,12 +1402,17 @@ export default function ELVision3000() {
             </p>
 
             <div className="bg-gradient-to-r from-yellow-900/30 to-amber-900/30 border border-yellow-500/30 rounded-2xl p-10 backdrop-blur-sm mb-12">
-              <div className="inline-block bg-green-500/20 border border-green-500/50 rounded-full px-6 py-2 mb-4">
-                <span className="text-green-400 font-bold text-lg">✓ FIRST SESSION FREE - Zero Risk</span>
-              </div>
               <div className="text-5xl font-bold text-yellow-400 mb-3">$3,000</div>
               <div className="text-xl text-gray-300 mb-2">6 Weeks Transformation (60 min/session)</div>
-              <div className="text-sm text-gray-400 mb-6">Pay After Session 1 • 1 Session per Week</div>
+              <div className="text-sm text-gray-400 mb-6">1 Session per Week</div>
+
+              <div className="flex items-center gap-4 bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-6">
+                <Shield className="w-8 h-8 text-blue-400 flex-shrink-0" />
+                <div className="text-left text-sm text-gray-300">
+                  <span className="font-bold text-blue-400 block mb-1 uppercase tracking-wider">Money Back Guarantee</span>
+                  Based on internal client feedback, the vast majority experience positive progress early in the process.
+                </div>
+              </div>
               
               <div className="inline-block bg-yellow-500/20 border border-yellow-500/30 rounded-lg px-6 py-3">
                 <p className="text-yellow-400 font-semibold">⚡ Limited</p>
@@ -1334,7 +1429,7 @@ export default function ELVision3000() {
                     content_name: 'EL Vision 3000 Coaching',
                   });
                 }
-                window.open('https://wa.me/62895325633487?text=Hi%20I%20would%20like%20to%20apply%20VIP%201%3A1%20%0AName:%20%0ASpecific%20Goal:%3A', '_blank');
+                window.location.href = 'https://app.elvisiongroup.com/3000survey';
               }}
             >
               <Phone className="w-8 h-8" />
