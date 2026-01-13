@@ -2,6 +2,41 @@ import { useState, useEffect, useRef } from 'react';
 import { Star, CheckCircle, TrendingUp, Heart, Crown, DollarSign, Phone, ArrowRight, Sparkles, Shield, Check, Play, Pause } from 'lucide-react';
 
 export default function ELVision3000() {
+  // CAPI Configuration
+  const CAPI_EDGE_FUNCTION_URL = 'https://nlrgdhpmsittuwiiindq.supabase.co/functions/v1/capi-universal';
+  const PIXEL_ID = '1393383179182528';
+
+  // Helper to send CAPI events
+  const sendCAPIEvent = async (eventName: string, userData: any = {}, customData: any = {}, eventId?: string) => {
+    try {
+       // Simple cookie helper
+       const getCookie = (name: string) => {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop()?.split(';').shift();
+       };
+
+      await fetch(CAPI_EDGE_FUNCTION_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pixelId: PIXEL_ID,
+          eventName,
+          userData: {
+             ...userData,
+             fbp: getCookie('_fbp'),
+             fbc: getCookie('_fbc'),
+             client_user_agent: navigator.userAgent
+          },
+          customData,
+          eventId
+        }),
+      });
+    } catch (e) {
+      console.error('CAPI Error:', e);
+    }
+  };
+
   // Facebook Pixel Code
   useEffect(() => {
     (function (f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
@@ -27,10 +62,16 @@ export default function ELVision3000() {
       'script',
       'https://connect.facebook.net/en_US/fbevents.js'
     );
+    
+    const eventId = crypto.randomUUID();
     fbq('init', '1393383179182528');
-    fbq('init', 'EAAGuZBVYmBugBQXvt52SiECtanczI1jMngHkCHWLWDQOIQGZBnkLipg0poGZBZBaJ7RNxa2fcesMH8mtyizKHSG9nZARKg622a8q3jcZCcKLGXXST9pNg26RZBFZBFrtSWT5C23oJBONslIQeOyTirGDjJp6gbrbGExxCF1D7VsdmrOoswXdy1UPomLrM8nJ4ih9MQZDZD');
-    fbq('track', 'PageView');
+    fbq('track', 'PageView', {}, { eventID: eventId });
+    
+    // Send Server-Side Event
+    sendCAPIEvent('PageView', {}, {}, eventId);
   }, []);
+
+
   const videoTestimonials = [
     {
       name: "Agus Mulyadi, SH., MH.",
@@ -367,8 +408,30 @@ export default function ELVision3000() {
     );
   };
 
+
+
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Promo Card */}
+      <div 
+        onClick={() => window.location.href = 'https://app.elvisiongroup.com/pay3000'}
+        className="cursor-pointer bg-gradient-to-r from-red-600 to-red-800 text-white py-4 px-6 text-center sticky top-0 z-50 shadow-lg animate-pulse hover:from-red-500 hover:to-red-700 transition-all"
+      >
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-center gap-4">
+          <span className="text-2xl md:text-3xl font-extrabold uppercase tracking-wider">
+            🚨 Get your 50% Discount VIP NOW!
+          </span>
+          <div className="flex items-center gap-3 bg-black/30 px-4 py-2 rounded-lg">
+             <span className="text-xl text-gray-300 line-through font-bold">$3,000</span>
+             <ArrowRight className="w-6 h-6 text-white" />
+             <span className="text-3xl font-black text-yellow-400">$1,500</span>
+          </div>
+          <span className="text-sm md:text-base font-semibold underline decoration-2 decoration-yellow-400">
+            Click here to claim via PayPal
+          </span>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Static Background */}
@@ -420,19 +483,28 @@ export default function ELVision3000() {
           </div>
 
           <button 
-            className="group bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-bold text-2xl px-16 py-8 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-yellow-500/50 flex items-center gap-4 mx-auto mb-8"
-            onClick={() => {
-              // @ts-ignore
-              if (typeof fbq === 'function') {
-                // @ts-ignore
-                fbq('track', 'AddToCart', {
-                  content_name: 'EL Vision 3000 Coaching',
-                });
-              }
-              window.location.href = 'https://app.elvisiongroup.com/3000survey';
-            }}
-          >
-            <Phone className="w-8 h-8" />
+                        className="group bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-bold text-2xl px-16 py-8 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-yellow-500/50 flex items-center gap-4 mx-auto mb-8"
+                        onClick={() => {
+                          const eventId = crypto.randomUUID();
+                          // @ts-ignore
+                          if (typeof fbq === 'function') {
+                            // @ts-ignore
+                            fbq('track', 'AddToCart', {
+                              content_name: 'EL Vision 3000 Coaching',
+                              value: 3000,
+                              currency: 'USD'
+                            }, { eventID: eventId });
+                          }
+                          // Send Server-Side Event
+                          sendCAPIEvent('AddToCart', {}, {
+                              content_name: 'EL Vision 3000 Coaching',
+                              value: 3000,
+                              currency: 'USD'
+                          }, eventId);
+            
+                          window.location.href = 'https://app.elvisiongroup.com/3000survey';
+                        }}
+                      >            <Phone className="w-8 h-8" />
             BOOK A CALL NOW
             <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
           </button>
@@ -1420,31 +1492,41 @@ export default function ELVision3000() {
             </div>
 
             <button 
-              className="group bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-bold text-2xl px-16 py-8 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-yellow-500/50 flex items-center gap-4 mx-auto mb-8"
-              onClick={() => {
-                // @ts-ignore
-                if (typeof fbq === 'function') {
-                  // @ts-ignore
-                  fbq('track', 'AddToCart', {
-                    content_name: 'EL Vision 3000 Coaching',
-                  });
-                }
-                window.location.href = 'https://app.elvisiongroup.com/3000survey';
-              }}
-            >
-              <Phone className="w-8 h-8" />
+                          className="group bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-bold text-2xl px-16 py-8 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-yellow-500/50 flex items-center gap-4 mx-auto mb-8"
+                          onClick={() => {
+                            const eventId = crypto.randomUUID();
+                            // @ts-ignore
+                            if (typeof fbq === 'function') {
+                              // @ts-ignore
+                              fbq('track', 'AddToCart', {
+                                content_name: 'EL Vision 3000 Coaching',
+                                value: 3000,
+                                currency: 'USD'
+                              }, { eventID: eventId });
+                            }
+                            // Send Server-Side Event
+                            sendCAPIEvent('AddToCart', {}, {
+                                content_name: 'EL Vision 3000 Coaching',
+                                value: 3000,
+                                currency: 'USD'
+                            }, eventId);
+              
+                            window.location.href = 'https://app.elvisiongroup.com/3000survey';
+                          }}
+                        >              <Phone className="w-8 h-8" />
               BOOK A CALL NOW
               <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
             </button>
 
-            <button
-              className="group bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-white font-bold text-xl px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-blue-500/50 flex items-center gap-4 mx-auto mb-8"
-              onClick={() => window.open('https://www.paypal.com/ncp/payment/3XU3SJV595CE4', '_blank')}
-            >
-              <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-mark-color.svg" alt="PayPal" className="w-6 h-6" />
-              PAY 6 WEEKS PROGRAM VIA PAYPAL
-              <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-            </button>
+            <div className="flex flex-col items-center gap-4 mb-8 max-w-md mx-auto">
+              <button
+                onClick={() => window.location.href = 'https://app.elvisiongroup.com/pay3000'}
+                className="w-full group bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-white font-bold text-xl px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-blue-500/50 flex items-center justify-center gap-4"
+              >
+                CLAIM 50% DISCOUNT
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+              </button>
+            </div>
 
             <p className="text-gray-500 text-sm">
               Limited slots. We only work with those serious about deep transformation.
