@@ -1,118 +1,149 @@
 import { useState, useEffect, useRef } from 'react';
-import { Star, CheckCircle, TrendingUp, Heart, Crown, DollarSign, Phone, ArrowRight, Sparkles, Shield, Check, Play, Pause } from 'lucide-react';
+import { Star, CheckCircle, TrendingUp, Heart, Crown, DollarSign, Phone, ArrowRight, Sparkles, Shield, Check, Play, Pause, ExternalLink } from 'lucide-react';
+import { 
+  initFacebookPixelWithLogging, 
+  trackPageViewEvent, 
+  trackAddToCartEvent, 
+  trackCustomEvent 
+} from '@/utils/fbpixel';
 
-interface VideoTestimonialType {
-  name: string;
-  title: string;
-  type: "image" | "video";
-  imageUrl?: string;
-  videoUrl?: string;
-  thumbnail: string;
-}
+export default function ELVision3000() {
+  // CAPI Configuration
+  const CAPI_EDGE_FUNCTION_URL = 'https://nlrgdhpmsittuwiiindq.supabase.co/functions/v1/capi-universal';
+  const PIXEL_ID = '1393383179182528';
 
-interface TextTestimonialType {
-  name: string;
-  title: string;
-  verified?: boolean;
-  image: string;
-  rating: number;
-  text: string;
-}
+  // Helper to send CAPI events
+  const sendCAPIEvent = async (eventName: string, userData: any = {}, customData: any = {}, eventId?: string) => {
+    try {
+       // Simple cookie helper
+       const getCookie = (name: string) => {
+          const value = `; ${document.cookie}`;
+          const parts = value.split(`; ${name}=`);
+          if (parts.length === 2) return parts.pop()?.split(';').shift();
+       };
 
-export default function ELVision1000() {
+      await fetch(CAPI_EDGE_FUNCTION_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pixelId: PIXEL_ID,
+          eventName,
+          userData: {
+             ...userData,
+             fbp: getCookie('_fbp'),
+             fbc: getCookie('_fbc'),
+             client_user_agent: navigator.userAgent
+          },
+          customData,
+          eventId
+        }),
+      });
+    } catch (e) {
+      console.error('CAPI Error:', e);
+    }
+  };
+
   // Facebook Pixel Code
   useEffect(() => {
-    (function (f: any, b: any, e: any, v: any) {
-      if (f.fbq) return;
-      let n: any = f.fbq = function (this: any) {
-        if (n.callMethod) {
-          n.callMethod.apply(this, arguments);
-        } else {
-          n.queue.push(arguments);
-        }
-      };
-      if (!f._fbq) f._fbq = n;
-      n.push = n;
-      n.loaded = true;
-      n.version = '2.0';
-      n.queue = [];
-      const t = b.createElement(e) as HTMLScriptElement; // Explicitly type as HTMLScriptElement
-      t.async = true;
-      t.src = v;
-      const s = b.getElementsByTagName(e)[0];
-      if (s && s.parentNode) {
-        s.parentNode.insertBefore(t, s);
-      }
-    })(
-      window,
-      document,
-      'script',
-      'https://connect.facebook.net/en_US/fbevents.js'
-    );
-    fbq('init', '1393383179182528');
-    fbq('init', 'EAAGuZBVYmBugBQXvt52SiECtanczI1jMngHkCHWLWDQOIQGZBnkLipg0poGZBZBaJ7RNxa2fcesMH8mtyizKHSG9nZARKg622a8q3jcZCcKLGXXST9pNg26RZBFZBFrtSWT5C23oJBONslIQeOyTirGDjJp6gbrbGExxCF1D7VsdmrOoswXdy1UPomLrM8nJ4ih9MQZDZD');
-    fbq('track', 'PageView');
+    initFacebookPixelWithLogging(PIXEL_ID);
+    
+    const eventId = crypto.randomUUID();
+    trackPageViewEvent({}, eventId, PIXEL_ID);
+    
+    // Send Server-Side Event
+    sendCAPIEvent('PageView', {}, {}, eventId);
   }, []);
-  const videoTestimonials: VideoTestimonialType[] = [
+
+
+  const videoTestimonials = [
     {
       name: "Agus Mulyadi, SH., MH.",
       title: "Head of Pangandaran Intelligence",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/agus.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/agus.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/agus.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/agus.jpg"
     },
     {
       name: "Dr. Gumilar",
       title: "Hypnotherapist & Foundation Leader",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/dr.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/dr.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/dr.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/dr.jpg"
     },
     {
       name: "Habib Umar",
       title: "Leader of Atsaqofah Islamic Boarding School",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/habib.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/habib.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/habib.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/habib.jpg"
     },
     {
       name: "Umi Jamilah",
       title: "Foundation Leader",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/umi.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/umi.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/umi.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/umi.jpg"
     },
     {
       name: "Felicia",
       title: "Entrepreneur",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/felicia.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/felicia.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/felicia.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/felicia.jpg"
     },
     {
       name: "Lena",
       title: "eL Vision Client",
       type: "image",
-      imageUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/lena.jpg",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/lena.jpg"
+      imageUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/lena.jpg",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/lena.jpg"
     },
     {
       name: "Vio",
       title: "eL Vision Client",
       type: "video",
-      videoUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/vio2.mp4",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/vio2.jpg" // Placeholder thumbnail
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/vio2.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/vio2.jpg" // Placeholder thumbnail
     },
     {
       name: "Arif",
       title: "eL Vision Client",
       type: "video",
-      videoUrl: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.mp4",
-      thumbnail: "https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.jpg" // Placeholder thumbnail
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/arif2.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/arif2.jpg" // Placeholder thumbnail
+    },
+    {
+      name: "Jacob",
+      title: "eL Vision Client",
+      type: "video",
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/jacob.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/jacob.jpg"
+    },
+    {
+      name: "Wiliam",
+      title: "eL Vision Client",
+      type: "video",
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/wiliam.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/wiliam.jpg"
+    },
+    {
+      name: "Ana",
+      title: "eL Vision Client",
+      type: "video",
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/ana.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/ana.jpg"
     }
   ];
 
-  const testimonials: TextTestimonialType[] = [
+  const founderVideoTestimonial = {
+      name: "eL Reyzandra (Founder)",
+      title: "eL Vision Founder",
+      type: "video",
+      videoUrl: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/founder.mp4",
+      thumbnail: "https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/founder.jpg"
+    };
+
+  const testimonials = [
     {
       name: "Felicia Quincy",
       title: "Instagram: @itsfelicia.quincy",
@@ -164,14 +195,14 @@ export default function ELVision1000() {
       title: "Real Estate Investor & Entrepreneur",
       image: "👩‍💼",
       rating: 5,
-      text: "I thought I was 'done' financially. Turns out there's a next level: manifestation without force. $1000 is the best investment compared to $50k seminars that are just theory."
+      text: "I thought I was 'done' financially. Turns out there's a next level: manifestation without force. $3000 is the best investment compared to $50k seminars that are just theory."
     },
     {
       name: "Stephanie Chen",
       title: "Art Gallery Owner, Singapore",
       image: "🎨",
       rating: 5,
-      text: "After the free first session, I immediately knew this was different. Not empty advice, but real results. 3 weeks later, my collection sold for 3x expected price. The energy shift is real."
+      text: "I immediately knew this was different. Not empty advice, but real results. 3 weeks later, my collection sold for 3x expected price. The energy shift is real."
     },
     {
       name: "Budi Hermawan",
@@ -269,8 +300,8 @@ export default function ELVision1000() {
   ];
 
   // Video Testimonial Component
-  const VideoTestimonial = ({ testimonial }: { testimonial: VideoTestimonialType }) => {
-    const videoRef = useRef<HTMLVideoElement | null>(null);
+  const VideoTestimonial = ({ testimonial }: { testimonial: any }) => {
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     return (
       <div className="bg-gradient-to-br from-gray-900 to-black border border-yellow-900/30 rounded-2xl p-6 hover:border-yellow-500/50 transition-all">
@@ -287,7 +318,7 @@ export default function ELVision1000() {
         </div>
         
         {testimonial.type === "video" && (
-          <video 
+          <video
             ref={videoRef}
             className="w-full rounded-lg"
             controls
@@ -296,11 +327,11 @@ export default function ELVision1000() {
             webkit-playsinline="true"
             poster={testimonial.thumbnail} // Use thumbnail as poster for videos
           >
-            {testimonial.videoUrl && <source src={testimonial.videoUrl} type="video/mp4" />}
+            <source src={testimonial.videoUrl} type="video/mp4" />
             Your browser does not support video playback.
           </video>
         )}
-        {testimonial.type === "image" && testimonial.imageUrl && (
+        {testimonial.type === "image" && (
           <img 
             src={testimonial.imageUrl} 
             alt={`Testimonial from ${testimonial.name}`} 
@@ -313,26 +344,22 @@ export default function ELVision1000() {
 
   // New Audio Player Component
   const AudioPlayer = () => {
-    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const audioRef = useRef<HTMLAudioElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
 
     const togglePlayPause = () => {
-      if (audioRef.current) {
-        if (audioRef.current.paused) {
-          audioRef.current.play();
-          setIsPlaying(true);
-          // Track custom event for audio playback
-          // @ts-ignore
-          if (typeof fbq === 'function') {
-            // @ts-ignore
-            fbq('trackCustom', 'AudioPlayed', {
-              audio_src: audioRef.current.src,
-            });
-          }
-        } else {
-          audioRef.current.pause();
-          setIsPlaying(false);
-        }
+      if (!audioRef.current) return;
+
+      if (audioRef.current.paused) {
+        audioRef.current.play();
+        setIsPlaying(true);
+        // Track custom event for audio playback
+        trackCustomEvent('AudioPlayed', {
+            audio_src: audioRef.current.src,
+        }, undefined, PIXEL_ID);
+      } else {
+        audioRef.current.pause();
+        setIsPlaying(false);
       }
     };
 
@@ -355,13 +382,35 @@ export default function ELVision1000() {
           {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
           {isPlaying ? 'Pause Audio' : 'Play Audio'}
         </button>
-        <audio ref={audioRef} src="https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/audio/el3000.mp3" preload="auto" className="hidden" />
+        <audio ref={audioRef} src="https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/el3000.mp3" preload="auto" className="hidden" />
       </div>
     );
   };
 
+
+
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Promo Card */}
+      <div 
+        onClick={() => window.location.href = 'https://app.elvisiongroup.com/usa/usa_pay3000'}
+        className="cursor-pointer bg-gradient-to-r from-red-600 to-red-800 text-white py-4 px-6 text-center sticky top-0 z-50 shadow-lg animate-pulse hover:from-red-500 hover:to-red-700 transition-all"
+      >
+        <div className="container mx-auto flex flex-col md:flex-row items-center justify-center gap-4">
+          <span className="text-2xl md:text-3xl font-extrabold uppercase tracking-wider">
+            🚨 Get your 50% Discount VIP NOW!
+          </span>
+          <div className="flex items-center gap-3 bg-black/30 px-4 py-2 rounded-lg">
+             <span className="text-xl text-gray-300 line-through font-bold">$3,000</span>
+             <ArrowRight className="w-6 h-6 text-white" />
+             <span className="text-3xl font-black text-yellow-400">$1,500</span>
+          </div>
+          <span className="text-sm md:text-base font-semibold underline decoration-2 decoration-yellow-400">
+            Click here to claim via PayPal
+          </span>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Static Background */}
@@ -395,33 +444,73 @@ export default function ELVision1000() {
             For those who already have everything, but still searching for something deeper
           </p>
 
-          {/* Free Trial Badge */}
-          <div className="inline-block bg-gradient-to-r from-green-500/20 to-emerald-500/20 border-2 border-green-500/50 rounded-2xl px-8 py-4 mb-6 backdrop-blur-sm">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-8 h-8 text-green-400" />
+          <div className="bg-gradient-to-r from-yellow-900/30 to-amber-900/30 border border-yellow-500/30 rounded-2xl p-8 max-w-2xl mx-auto backdrop-blur-sm mb-6">
+            <div className="text-5xl font-bold text-yellow-400 mb-2">$3,000</div>
+            <div className="text-xl text-gray-300 mb-1">6 Weeks • 6 Private Sessions (60 min/session)</div>
+            <div className="text-sm text-gray-400">1 Session per Week</div>
+          </div>
+
+          {/* Money Back Guarantee Box */}
+          <div className="bg-gradient-to-r from-blue-900/20 to-indigo-900/20 border border-blue-500/30 rounded-2xl p-6 max-w-2xl mx-auto backdrop-blur-sm mb-8">
+            <div className="flex items-center gap-4">
+              <Shield className="w-12 h-12 text-blue-400 flex-shrink-0" />
               <div className="text-left">
-                <div className="text-2xl font-bold text-green-400">FIRST SESSION FREE</div>
-                <div className="text-sm text-gray-300">Experience The Value, Pay When You're Sure</div>
+                <div className="text-xl font-bold text-blue-400 uppercase tracking-wider">Money Back Guarantee</div>
+                <div className="text-gray-300">Based on internal client feedback, the vast majority experience positive progress early in the process.</div>
               </div>
             </div>
           </div>
 
-          <div className="bg-gradient-to-r from-yellow-900/30 to-amber-900/30 border border-yellow-500/30 rounded-2xl p-8 max-w-2xl mx-auto backdrop-blur-sm mb-8">
-            <div className="text-5xl font-bold text-yellow-400 mb-2">$1,000</div>
-            <div className="text-xl text-gray-300 mb-1">6 Weeks • 6 Private Sessions (60 min/session)</div>
-            <div className="text-sm text-gray-400">Pay After Session 1 • 1 Session per Week</div>
-          </div>
+          <button 
+                        className="group bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-bold text-2xl px-16 py-8 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-yellow-500/50 flex items-center gap-4 mx-auto mb-8"
+                        onClick={() => {
+                          const eventId = crypto.randomUUID();
+                          
+                          trackAddToCartEvent({
+                            content_name: 'EL Vision 3000 Coaching',
+                            value: 3000,
+                            currency: 'USD'
+                          }, eventId, PIXEL_ID);
+                          
+                          // Send Server-Side Event
+                          sendCAPIEvent('AddToCart', {}, {
+                              content_name: 'EL Vision 3000 Coaching',
+                              value: 3000,
+                              currency: 'USD'
+                          }, eventId);
+            
+                          window.location.href = '/usa/usa_3000survey';
+                        }}
+                      >            <Phone className="w-8 h-8" />
+            BOOK A CALL NOW
+            <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
+          </button>
         </div>
       </div>
 
           <button 
-            className="group bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-black font-bold text-xl px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-xl shadow-purple-500/50 flex items-center gap-4 mx-auto mb-16"
+            className="group bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-400 hover:to-pink-400 text-black font-bold text-xl px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-xl shadow-purple-500/50 flex items-center gap-4 mx-auto mb-4"
             onClick={() => window.open('https://instagram.com/elreyzandra', '_blank')}
           >
             <ArrowRight className="w-6 h-6" />
             FOLLOW OUR FOUNDER AT INSTAGRAM
           </button>
+
+          <button 
+            className="group bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-black font-bold text-xl px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-xl shadow-blue-500/50 flex items-center gap-4 mx-auto mb-16"
+            onClick={() => window.open('https://cirebon.inews.id/read/204537/ini-sosok-el-reyzandra-mentor-bisnis-yang-sukseskan-ratusan-pengusaha-muda/2', '_blank')}
+          >
+            <ExternalLink className="w-6 h-6" />
+            ABOUT FOUNDER
+          </button>
         
+        {/* eL Reyzandra's Video Testimonial */}
+        <div className="py-10 bg-black">
+          <div className="container mx-auto px-6">
+            <VideoTestimonial testimonial={founderVideoTestimonial} />
+          </div>
+        </div>
+
         {/* Audio Player */}
         <div className="py-10 bg-black">
           <div className="container mx-auto px-6">
@@ -452,19 +541,16 @@ export default function ELVision1000() {
               <p className="mb-4">What is missing?</p>
               <p className="mb-4">Years of research, personal testing, and sacrifice eventually revealed the gap.</p>
               <p className="mb-4">That gap is what eL Vision now addresses—not as theory, but as a lived system that can be experienced directly.</p>
-              <p className="mb-4">This is also why the first session is offered free.</p>
               <p className="mb-4">I do not sell motivation, belief, or advice.</p>
               <p className="mb-4">I offer a working method.</p>
-              <p className="mb-4">One of my earliest international clients in Dubai came to me after losing his job. He joined a free session. Weeks later, he secured a better position as a manager at a premium gym.</p>
+              <p className="mb-4">One of my earliest international clients in Dubai came to me after losing his job. Weeks later, he secured a better position as a manager at a premium gym after applying our method.</p>
               <p className="mb-4">No promises were made. No persuasion was used.</p>
               <p className="mb-4">Am I extraordinary?</p>
               <p className="mb-4">No.</p>
               <p className="mb-4">What I have learned is this:</p>
               <p className="mb-4">every human being carries an inner strength already granted by nature.</p>
               <p className="mb-4">The difference lies only in knowing how to activate it.</p>
-              <p className="mb-4">If you genuinely wish to experience this for yourself,</p>
-              <p className="mb-4">start with the free session.</p>
-              <p className="mb-4">Only then decide whether the six-week program is right for you.</p>
+              <p className="mb-4">If you genuinely wish to experience this for yourself, join the six-week program.</p>
               <p className="mb-4">I have no interest in earning money by keeping people dependent or confused.</p>
               <p className="mb-4">This is designed to be one of the most efficient investments you will ever make—</p>
               <p className="mb-4">a small portion of your resources, in exchange for what matters most: clarity, alignment, and inner stability.</p>
@@ -474,6 +560,82 @@ export default function ELVision1000() {
             </div>
           </div>
         </div>
+
+      {/* Founder History & Why It Works Section */}
+      <div className="py-20 bg-gray-900">
+        <div className="container mx-auto px-6 max-w-5xl">
+          <div className="flex flex-col md:flex-row gap-12 items-center mb-16">
+            <div className="w-full md:w-1/3">
+               <div className="bg-gradient-to-br from-yellow-500/10 to-amber-500/10 border border-yellow-500/30 rounded-3xl p-8 text-center backdrop-blur-sm">
+                 <div className="text-6xl mb-6">📰</div>
+                 <div className="font-bold text-yellow-500 text-sm tracking-wider uppercase mb-2">As Featured In</div>
+                 <div className="text-3xl font-bold text-white mb-4">Liputan6</div>
+                 <div className="h-px w-16 bg-yellow-500/50 mx-auto mb-4"></div>
+                 <p className="text-gray-300 italic">"Helped hundreds of entrepreneurs with 98% success rate"</p>
+               </div>
+            </div>
+            <div className="w-full md:w-2/3">
+              <h2 className="text-4xl font-bold mb-6">
+                <span className="bg-gradient-to-r from-yellow-400 to-amber-400 bg-clip-text text-transparent">
+                  From Media-Recognized Motivator to System Architect
+                </span>
+              </h2>
+              <p className="text-gray-300 text-lg leading-relaxed mb-6">
+                Before eL Vision became an exclusive 1:1 service, <strong className="text-white">eL Reyzandra</strong> was recognized by national media (Liputan6) as a business motivator who successfully guided hundreds of beginner entrepreneurs to profitability.
+              </p>
+              <p className="text-gray-300 text-lg leading-relaxed">
+                But during this journey, he discovered a critical truth: <strong>Motivation is temporary. Systems are permanent.</strong>
+              </p>
+              <p className="text-gray-300 text-lg leading-relaxed mt-4">
+                He realized that the 2% who failed didn't lack effort—they had internal "algorithms" that rejected success. This led to the creation of the eL Vision Method: a protocol not to <em>motivate</em> the mind, but to <strong className="text-yellow-400">reprogram the biological and energetic system</strong> itself.
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-bold text-white mb-4">Why The System Works Across All Areas</h3>
+            <p className="text-xl text-gray-400">We don't solve problems. We fix the machine that perceives them.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Finance */}
+            <div className="bg-gradient-to-br from-black to-gray-900 border border-gray-800 p-8 rounded-2xl hover:border-green-500/30 transition-all group">
+               <div className="w-14 h-14 bg-green-900/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                 <DollarSign className="w-8 h-8 text-green-400" />
+               </div>
+               <h4 className="text-xl font-bold text-white mb-3">Finance</h4>
+               <div className="text-green-500 text-sm font-bold mb-3 uppercase tracking-wider">The "Profit" Algorithm</div>
+               <p className="text-gray-400 leading-relaxed">
+                 Most financial blocks aren't strategic—they are energetic. We install a "Success Algorithm" that aligns your subconscious focus with market opportunities, making wealth creation feel like a natural reflex rather than a forced effort.
+               </p>
+            </div>
+
+            {/* Health */}
+            <div className="bg-gradient-to-br from-black to-gray-900 border border-gray-800 p-8 rounded-2xl hover:border-red-500/30 transition-all group">
+               <div className="w-14 h-14 bg-red-900/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                 <Heart className="w-8 h-8 text-red-400" />
+               </div>
+               <h4 className="text-xl font-bold text-white mb-3">Health</h4>
+               <div className="text-red-500 text-sm font-bold mb-3 uppercase tracking-wider">The "Repair" Mode</div>
+               <p className="text-gray-400 leading-relaxed">
+                 High achievers live in chronic sympathetic (fight-or-flight) stress. Our method forces the nervous system into deep parasympathetic dominance—the only state where the body can repair tissues, kill abnormal cells (as seen in our cancer survivor cases), and reverse aging.
+               </p>
+            </div>
+
+            {/* Relationship */}
+            <div className="bg-gradient-to-br from-black to-gray-900 border border-gray-800 p-8 rounded-2xl hover:border-purple-500/30 transition-all group">
+               <div className="w-14 h-14 bg-purple-900/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                 <Crown className="w-8 h-8 text-purple-400" />
+               </div>
+               <h4 className="text-xl font-bold text-white mb-3">Relationship</h4>
+               <div className="text-purple-500 text-sm font-bold mb-3 uppercase tracking-wider">The "Resonance" Law</div>
+               <p className="text-gray-400 leading-relaxed">
+                 You don't get what you want; you get who you are. By calibrating your internal emotional baseline, you naturally repel toxic dynamics and magnetically attract partners (or heal existing marriages) who respect and value your presence without you saying a word.
+               </p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       {/* Story-Based Case Studies Section */}
       <div className="py-20 bg-gradient-to-b from-black to-gray-900">
@@ -514,13 +676,14 @@ export default function ELVision1000() {
                 </div>
               </div>
               
-                            <video
-                              className="w-full rounded-lg mb-6"
-                              controls
-                              preload="metadata"
-                              playsInline
-                              poster="https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.jpg"
-                            >                <source src="https://nlrgdhpmsittuwiiindq.supabase.co/storage/v1/object/public/testi/arif2.mp4" type="video/mp4" />
+              <video 
+                className="w-full rounded-lg mb-6"
+                controls
+                preload="metadata"
+                playsInline
+                poster="https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/arif2.jpg"
+              >
+                <source src="https://tgojzhjujhjboboqygub.supabase.co/storage/v1/object/public/meta/arif2.mp4" type="video/mp4" />
                 Your browser does not support video playback.
               </video>
 
@@ -901,7 +1064,6 @@ export default function ELVision1000() {
 
             <div className="mt-12 bg-gradient-to-r from-yellow-900/30 to-amber-900/30 border border-yellow-500/30 rounded-2xl p-8">
               <p className="text-2xl text-gray-300 leading-relaxed">
-                That's why <strong className="text-yellow-400">FIRST SESSION IS FREE</strong>.<br />
                 You don't have to believe our words.<br />
                 <span className="text-3xl font-bold text-yellow-400">Experience the proof yourself.</span>
               </p>
@@ -1297,35 +1459,59 @@ export default function ELVision1000() {
             </p>
 
             <div className="bg-gradient-to-r from-yellow-900/30 to-amber-900/30 border border-yellow-500/30 rounded-2xl p-10 backdrop-blur-sm mb-12">
-              <div className="inline-block bg-green-500/20 border border-green-500/50 rounded-full px-6 py-2 mb-4">
-                <span className="text-green-400 font-bold text-lg">✓ FIRST SESSION FREE - Zero Risk</span>
-              </div>
-              <div className="text-5xl font-bold text-yellow-400 mb-3">$1,000</div>
+              <div className="text-5xl font-bold text-yellow-400 mb-3">$3,000</div>
               <div className="text-xl text-gray-300 mb-2">6 Weeks Transformation (60 min/session)</div>
-              <div className="text-sm text-gray-400 mb-6">Pay After Session 1 • 1 Session per Week</div>
+              <div className="text-sm text-gray-400 mb-6">1 Session per Week</div>
+
+              <div className="flex items-center gap-4 bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-6">
+                <Shield className="w-8 h-8 text-blue-400 flex-shrink-0" />
+                <div className="text-left text-sm text-gray-300">
+                  <span className="font-bold text-blue-400 block mb-1 uppercase tracking-wider">Money Back Guarantee</span>
+                  Based on internal client feedback, the vast majority experience positive progress early in the process.
+                </div>
+              </div>
               
               <div className="inline-block bg-yellow-500/20 border border-yellow-500/30 rounded-lg px-6 py-3">
-                <p className="text-yellow-400 font-semibold">⚡ Limited: Only 3 Slots per Month</p>
+                <p className="text-yellow-400 font-semibold">⚡ Limited</p>
               </div>
             </div>
 
             <button 
-              className="group bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-bold text-2xl px-16 py-8 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-yellow-500/50 flex items-center gap-4 mx-auto mb-8"
-              onClick={() => {
-                // @ts-ignore
-                if (typeof fbq === 'function') {
-                  // @ts-ignore
-                  fbq('track', 'Lead', {
-                    content_name: 'EL Vision 3000 Coaching',
-                  });
-                }
-                window.open('https://wa.me/62895325633487?text=Hi%20I%20would%20like%20to%20apply%20$1000%20VIP%201%3A1%20%0AName:%20%0ASpecific%20Goal:%3A', '_blank');
-              }}
-            >
-              <Phone className="w-8 h-8" />
+                          className="group bg-gradient-to-r from-yellow-500 to-amber-500 hover:from-yellow-400 hover:to-amber-400 text-black font-bold text-2xl px-16 py-8 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-yellow-500/50 flex items-center gap-4 mx-auto mb-8"
+                          onClick={() => {
+                            const eventId = crypto.randomUUID();
+                            // @ts-ignore
+                            if (typeof fbq === 'function') {
+                              // @ts-ignore
+                              fbq('track', 'AddToCart', {
+                                content_name: 'EL Vision 3000 Coaching',
+                                value: 3000,
+                                currency: 'USD'
+                              }, { eventID: eventId });
+                            }
+                            // Send Server-Side Event
+                            sendCAPIEvent('AddToCart', {}, {
+                                content_name: 'EL Vision 3000 Coaching',
+                                value: 3000,
+                                currency: 'USD'
+                            }, eventId);
+              
+                            window.location.href = 'https://app.elvisiongroup.com/usa/usa_3000survey';
+                          }}
+                        >              <Phone className="w-8 h-8" />
               BOOK A CALL NOW
               <ArrowRight className="w-8 h-8 group-hover:translate-x-2 transition-transform" />
             </button>
+
+            <div className="flex flex-col items-center gap-4 mb-8 max-w-md mx-auto">
+              <button
+                onClick={() => window.location.href = 'https://app.elvisiongroup.com/usa/usa_pay3000'}
+                className="w-full group bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-400 hover:to-cyan-400 text-white font-bold text-xl px-8 py-4 rounded-full transition-all transform hover:scale-105 shadow-2xl shadow-blue-500/50 flex items-center justify-center gap-4"
+              >
+                CLAIM 50% DISCOUNT
+                <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
+              </button>
+            </div>
 
             <p className="text-gray-500 text-sm">
               Limited slots. We only work with those serious about deep transformation.
