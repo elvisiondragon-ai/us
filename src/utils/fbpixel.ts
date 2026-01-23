@@ -55,3 +55,18 @@ export const trackCustomEvent = (eventName: string, data: any = {}, eventId?: st
     console.log(`[FBPixel] Track Custom ${eventName}`, { data, eventId, pixelId });
   }
 };
+
+const getCookie = (name: string) => {
+  if (typeof document === 'undefined') return null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+  return null;
+}
+
+export const getFbcFbpCookies = () => {
+  if (typeof window === 'undefined') return { fbc: null, fbp: null };
+  const fbc = getCookie('_fbc') || null;
+  const fbp = getCookie('_fbp') || null;
+  return { fbc, fbp };
+};
