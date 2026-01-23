@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Star, CheckCircle, TrendingUp, Heart, Crown, DollarSign, Phone, ArrowRight, Sparkles, Shield, Check, Play, Pause, ExternalLink } from 'lucide-react';
+
+import { Star, CheckCircle, TrendingUp, Heart, Crown, DollarSign, ArrowRight, Sparkles, Shield, Check, Play, Pause, ExternalLink } from 'lucide-react';
 import { 
   initFacebookPixelWithLogging, 
   trackPageViewEvent, 
@@ -10,7 +10,7 @@ import {
 } from '@/utils/fbpixel';
 
 export default function ELVision3000() {
-  const navigate = useNavigate();
+
   // CAPI Configuration
   const CAPI_EDGE_FUNCTION_URL = 'https://nlrgdhpmsittuwiiindq.supabase.co/functions/v1/capi-universal';
   const PIXEL_ID = '1393383179182528';
